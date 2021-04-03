@@ -1,0 +1,224 @@
+## Overview
+
+The LothianProductionsCommon (LPC) library is a simple and easy-to-master framework for solving common enterprise data-access issues that crop up when scaling .NET and J2EE applications.
+
+The project has contributors across the world and is in use in a variety of .NET and Mono production environments. It has been used in both NASDAQ companies and small non-technical organisations.
+
+<p>It offers many valuable facilities, including functionality in these key areas:</p>
+
+<table class="greytop">
+
+  <tr><th>Services</th><th>Description</th><th>Namespace</th></tr>
+  <tr><td>Database portability and abstraction</td><td>The ConnectionProvider provides a great many wrappers for core data retrieval calls, as well as providing a database independent means for instantiating connections.
+It also provides a number of static SQL and command manipulation functions.
+</td><td>LothianProductions.Data</td></tr>
+  <tr><td>Auto numbering</td><td>The Autonumber class exposes an interface for incrementing a custom numeric index field in a given table.</td><td>LothianProductions.Data</td></tr>
+  <tr><td>Tiered abstraction layers</td><td>The Factory and related Broker classes provide for easy abstraction of an application across multiple tiers.</td><td>LothianProductions.Data</td></tr>
+
+  <tr><td>String, date, numeric manipulation</td><td>The StringHelper, DateHelper and MathHelper classes provide various helper functions</td><td>LothianProductions.Util</td></tr>
+  <tr><td>Caching and pooling</td><td>The Cache and RelationshipCache classes provide for TTL-enabled detached caching of objects and relationship.</td><td>LothianProductions.Util.Cache</td></tr>
+  <tr><td>Daemon</td><td>The DaemonScheduler and EagerCacheDaemon implementation provide for the execution of regular, scheduled tasks and pre-emptive caching.</td><td>LothianProductions.Util.Daemon</td></tr>
+  <tr><td>Configuration</td><td>The AppSettingsHelper provides a mechanism for easily obtaining complex configuration data.</td><td>LothianProductions.Util.Settings</td></tr>
+
+  <tr><td>Templating</td><td></td><td>LothianProductions.Util.Templating</td></tr>
+  <tr><td>Action framework</td><td></td><td>LothianProductions.Actions</td></tr>
+</table>
+
+<p>Currently only the C# .NET version of the LPC is supported.</p>
+
+<h2>Scope of this document</h2>
+
+<p>This document describes and explains the LothianProductionsCommon framework.</p>
+
+<h3>Table of contents</h3>
+
+
+
+<h2>Glossary of terms</h2>
+
+<p><u>Technical terminology</u></p>
+
+<table class="greytop">
+  <tr>
+    <th>Term</th><th>Definition</th>
+  </tr>
+  <tr>
+    <td>LPC</td>
+    <td>Abbreviation for the LothianProductionsCommon project.</td>
+
+  </tr>
+  <tr>
+    <td>Fa&ccedil;ade</td>
+    <td>A fa&ccedil;ade is an engineering pattern similar to an adapter. It allows components to be transparently switched, for instance to allow a service to use multiple data sources.</td>
+  </tr>
+  <tr>
+    <td>Model 1</td>
+
+    <td>Simple &quot;flat&quot; template modelling. Does not afford distinct roles to components which direct, provide or transform the data being used.</td>
+  </tr>
+  <tr>
+    <td>MVC</td>
+    <td>Stands for model view controller and is a factoring pattern that allows an application great flexibility. The model represents the application.s underlying data model, the view represents the applications views on that data and the controller represents the business logic that takes a user between different views of data and performs different operations on it.<br/><br/>
+Refactoring an MVC application is often exponentially cheaper than a non-MVC application. (See also PAC.)
+
+</td>
+  </tr>
+  <tr>
+    <td>Model 2</td>
+    <td>An implementation of MVC factoring for templates.</td>
+  </tr>
+  <tr>
+    <td>webapp</td>
+
+    <td>&quot;Web application&quot;.</td>
+  </tr>
+  <tr>
+    <td>UML</td>
+    <td>Unified modelling language, the standard visual communication language for software engineers.</td>
+  </tr>
+  <tr>
+
+    <td>Domain analysis</td>
+    <td>Modelling and understanding the domain for a given solution. The domain is the complete area for which the solution is being provided.</td>
+  </tr>
+  <tr>
+    <td>DAL</td>
+    <td>Data access layer. The part of an application that is specifically and solely focussed on reading and persisting data.</td>
+  </tr>
+
+  <tr>
+    <td>Component diagram</td>
+    <td>A diagram that is lower-level than a dataflow diagram, providing visibility to software or hardware components and implementation details.</td>
+  </tr>
+  <tr>
+    <td>Web Service</td>
+    <td>A Web Service is an XML and HTTP based interface which provides a simple consistent mechanism for working with data.</td>
+
+  </tr>
+  <tr>
+    <td>Agile</td>
+    <td>Agile development is a recent software engineering methodology. It provides for safer development than many of the older methodologies, and can deliver business value earlier.<br/><br/>
+Extreme Programming is one of the main agile methodologies.
+</td>
+  </tr>
+
+</table>
+
+<h2>FAQ</h2>
+
+<h3>What does a typical request lifecycle look like when using the action framework?</h3>
+
+<p>This diagram <a href="http://s.reincubate.com/res/i/labs/actionPath.gif" title="Application request lifecycle">shows a typical request's lifecycle</a> when running on the .NET platform.</p>
+
+<h3>Is there a flow-chart summarising the cache decision flow?</h3>
+
+<p>See <a href="http://s.reincubate.com/res/i/labs/cachingFlowchart.gif" title="Caching flowchart">here</a>.</p>
+
+
+<h3>Why does the LPC differentiate between domain and relational data?</h3>
+
+<h4>Differentiation between domain and relational data</h4>
+
+See [here](/blog/2008/sep/22/google-developer-day-app-engine-and-scaling/).
+
+<!-- Tutorial, where in use? How does this differ from: Hibernate, Monorails/Castle, nvelocity, Vanatec - (stop-hibernating.com) OpenAccess, Microsoft Enterprise Library -->
+
+<h2>Changelog</h2>
+
+<h3>2.5 (May 2008)</h3>
+<ul>
+  <li>Lite DML autogeneration framework for improved ORM on Cacheable objects</li>
+  <li>Query interception and analysis for all DML statements; integrated reporting</li>
+  <li>New configuration mechanism for brokers, factories &amp; caching; much simpler to manage</li>
+
+  <li>Rewritten HttpAction framework with regexp-based URL-space support</li>
+  <li>Primitive HTTP proxy server implementation</li>
+  <li>Enhanced custom handler support for configuration relocated over HTTP or into assemblies or resources</li>
+</ul>
+
+<h3>2.4 (October 2007)</h3>
+<ul>
+
+  <li>Native HTTP/1.0 client &amp; server implementation, including gzip &amp; easy upload tools</li>
+  <li>Reusable licensing &amp; activation framework</li>
+  <li>Audio, video &amp; graphic manipulation libraries</li>
+  <li>Cluster support &amp; load-balance mechanisms: remote cache manipulation</li>
+
+  <li>Enhanced monitoring &amp; reporting tools, for stand-alone &amp; cluster monitoring</li>
+  <li>More CMS functionality: address generator module for rendering SEO-friendly URLs</li>
+  <li>Some meta-search framework tools</li>
+</ul>
+<h3>2.3 (April 2007)</h3>
+<ul>
+
+  <li>Integrated connection pooling (beneficial for non-pooling OleDb or Odbc implementations)</li>
+  <li>Improved caching of relocated configuration files</li>
+  <li>Re-write of templating code &amp; introduction of conditional directive parser tags</li>
+</ul>
+<h3>2.2 (November 2006)</h3>
+<ul>
+
+  <li>Combinatorial relationship functions</li>
+  <li>Seamless support for external configuration files in common .Config format</li>
+  <li>Robust error-handling HttpModule with email notification</li>
+  <li>Introduction of "{criteria}" &amp; "{dependancy}" placeholder in .config</li>
+  <li>New ActionHttpHandlers supporting sessions: RoSessionActionHttpHandler, RwSessionActionHttpHandler</li>
+  <li>Deprecation of static datatype manipulation calls in ConnectionProvider; moved to schemes</li>
+
+  <li>Configurable ActionHttpHandler action types</li>
+</ul>
+<h3>2.1 (27th March 2006)</h3>
+<ul>
+  <li>Introduction of new connection schemes</li>
+  <li>Support for native .NET 2.0 connection declaration</li>
+</ul>
+
+<h3>2.0 (24th November 2005)</h3>
+<ul>
+  <li>.NET 2.0 support</li>
+  <li>.config properties refactored down into top-level "lpc/" configuration section</li>
+</ul>
+<h3>1.2 (26th April 2005)</h3>
+<ul>
+
+  <li>Oracle sequencing support</li>
+  <li>Start of XmlHelper and broader XML support</li>
+  <li>Support for named datasources</li>
+  <li>Factored out Oracle and MySql specific code</li>
+  <li>Visual FoxPro support patches</li>
+  <li>Greater Web Service support</li>
+
+  <li>Cache optimisations</li>
+</ul>
+<h3>1.1 (29th October 2004)</h3>
+<ul>
+  <li>Tracing and logging optimisations</li>
+  <li>Search framework improvements: IsNull and Like, ordering bug-fixes</li>
+  <li>Visual FoxPro support</li>
+
+</ul>
+<h3>1.0 (23rd February 2004)</h3>
+<ul>
+  <li>Working domain object and relationship caching</li>
+  <li>Passes all NUnit tests</li>
+</ul>
+<h3>pre 1.0 (mid 2003)</h3>
+
+<ul>
+  <li><b>2003</b>: Migration from J2EE.</li>
+  <li><b>2002</b>: Ported version becomes the backbone of sites for major .com. Optimisation takes page costs to sub-10ms on low-end SPARC devices.</li>
+  <li><b>2001</b>: The system is first conceived and implemented in Java. Prototype successfully employed by major .com to launch 300,000 page high-performance webapp.</li>
+</ul>
+
+<h2>Contributors</h2>
+
+<ul>
+  <li>Aidan Fitzpatrick</li>
+  <li>Andrew Dancy</li>
+  <li>Kevin Fisher</li>
+  <li>Magnus Solv&aring;g</li>
+
+  <li>Trond F&oslash;rde</li>
+  <li>David Santoro</li>
+  <li>Ken Fassone</li>
+</ul>
